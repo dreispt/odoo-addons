@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- base.action.rule -->
+        <record id="view_base_action_rule_form_reis" model="ir.ui.view">
+            <field name="name">base.action.rule.form.reis</field>
+            <field name="model">base.action.rule</field>
+            <field name="inherit_id" ref="base_action_rule.view_base_action_rule_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+            
+                <!-- New field "trg_evalexpr" -->
+                <group name="partner" position="after">
+                    <group col="2" colspan="2">
+                        <separator colspan="4" string="Evaluated expression"/>
+                        <field name="trg_evalexpr" colspan="4" nolabel="1"/>
+                    </group>
+                </group>
+                <!--  New field "email_template_id" -->
+                <field name="server_action_id" position ="after">
+                       <separator colspan="4" string="E-mail template for message to send"/>
+                       <field name="email_template_id"/>
+                       <field name="email_template_force"/>
+                </field>
+
+            </field>
+       </record>
+
+	   </data>
+</openerp>
+
+
+
+
+
