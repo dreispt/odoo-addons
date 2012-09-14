@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+	
+        <record id="project_project_form_add_code" model="ir.ui.view">
+            <field name="name">project_project_form_dreis</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+				<!-- Project Code -->
+				<field name="name" position="after">
+					<field name="project_code" string="Project Code"/>
+				</field>
+            </field>
+		</record>
+
+		</data>
+</openerp>
+		
+
+
+
+
+
+
+
+
