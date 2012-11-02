@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<openerp>
+    <data noupdate="1">
+
+	    <!-- Initialize database table -->
+	    <function model="import.sqlpush" name="_install_init"/>
+
+        <!-- Scheduler job to run import -->
+        <record id="ir_cron_import_sqlpush_action" model="ir.cron">
+            <field name="name">PushSQL Import new data</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field eval="'import.sqlpush'" name="model"/>
+            <field eval="'do_import_data'" name="function"/>
+            <field eval="'()'" name="args"/>
+        </record>
+
+        <!-- Scheduler job to purge old data -->
+        <record id="ir_cron_import_sqlpush_purge" model="ir.cron">
+            <field name="name">PushSQL Purge old data</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field eval="'import.sqlpush'" name="model"/>
+            <field eval="'do_purge'" name="function"/>
+            <field eval="'()'" name="args"/>
+        </record>
+
+    </data>
+</openerp>
+
+
