@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
-#
-#    Daniel Reis, 2011
 #    
+#    Copyright (C) 2012 Daniel Reis
+#
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
 #    published by the Free Software Foundation, either version 3 of the
@@ -23,16 +23,13 @@ from base_util_refcodes import name_tools
 
 class project(osv.osv):
     _inherit = 'project.project'
-    _columns = {
-        'project_code': fields.char('Project Code(s)', size=128, help='Project management specific identification codes.'),
-    }
 
     def name_get(self, cr, uid, ids, context=None):
-        return name_tools.extended_name_get(self, cr, uid, ids, '[%(project_code)s] %(name)s', ['project_code', 'name'], context=context)
+        return name_tools.extended_name_get(self, cr, uid, ids, '[%(code)s] %(name)s', ['code', 'name'], context=context)
         
     def name_search(self, cr, user, name='', args=None, operator='ilike', context=None, limit=100):
         return name_tools.extended_name_search(self, cr, user, name, args, operator, context=context, limit=limit, 
-                                keys=['project_code', 'name', 'code'])
+                                keys=['code', 'name'])
     
 project()
 

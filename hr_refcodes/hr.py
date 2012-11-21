@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
-#
-#    Daniel Reis, 2011
 #    
+#    Copyright (C) 2012 Daniel Reis
+#
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
 #    published by the Free Software Foundation, either version 3 of the
@@ -29,11 +29,11 @@ class hr_department(osv.osv):
     _order = 'ref'
 
     def name_get(self, cr, uid, ids, context=None):
-        return name_tools.extended_name_get(self, cr, uid, ids, '[%(ref)s] %(name)s', ['ref','name', 'parent_id'], context=context)
+        return name_tools.extended_name_get(self, cr, uid, ids, '[%(ref)s] %(name)s', ['ref','name'], context=context)
     
     def name_search(self, cr, user, name='', args=None, operator='ilike', context=None, limit=100):
         return name_tools.extended_name_search(self, cr, user, name, args, operator, context=context, limit=limit, 
-                                keys=['ref','name'])
+                                keys=['ref', 'name'])
     
 hr_department()
 

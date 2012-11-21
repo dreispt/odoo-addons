@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
-#
-#    Daniel Reis
-#    2012
+#    
+#    Copyright (C) 2012 Daniel Reis
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,13 +18,12 @@
 #
 ##############################################################################
 
-
 {
     'name': 'CRM customer codes visible and searchable in form fields',
-    'version': '6.1.1',
+    'version': '1',
     "category": "Customer Relationship Management",
+    'description': """Add reference code columns to CRM module""",
     'author': 'Daniel Reis',
-    'website': 'daniel.reis@securitas.pt',
     'depends': [
         'base_util_refcodes',
         'crm',

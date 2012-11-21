@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
-#
-#    Daniel Reis
-#    2012
+#    
+#    Copyright (C) 2012 Daniel Reis
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,20 +18,14 @@
 #
 ##############################################################################
 
-
 {
-    'name': 'Project code visible and searchable in form fields',
-    'version': '6.1.1',
-    "category": "Project Management",
+    'name': 'Analytic Account/Contract code visible and searchable in form fields',
+    'version': '1.0',
+    'category': 'Project Management',
     'author': 'Daniel Reis',
     'website': 'daniel.reis@securitas.pt',
-    'depends': [
-        'base_util_refcodes',
-        'project',
-    ],
-    'update_xml': [
-        'project_view.xml',
-    ],
+    'depends': ['base_util_refcodes', 'project'],
+    'update_xml': ['project_view.xml'],
     'installable': True,
     'application': False,
 }
