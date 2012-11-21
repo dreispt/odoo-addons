@@ -29,7 +29,7 @@ class import_sqlpush(osv.osv):
         'model': fields.char('Model', size=40, required=True),
         'data': fields.text('Data', required=True),
         'noupdate': fields.integer('No updates'),
-        'key_ref': fields.char('Key Reference', size=100,
+        'key_ref': fields.char('Key Reference', size=100, select=1,
             help='Can be used to help the origin app to later track the outcome of the import operation.'),
         'state': fields.selection( [('draft', 'New'), ('cancel', 'Failed'), ('done','Done')], 
                                    'State', select=1), #Indexed for faster queries
@@ -51,8 +51,18 @@ class import_sqlpush(osv.osv):
         'data' should use \n - char(10) as line separator and \t - char(9) as column separator.  
         """
         #PSQL EXAMPLE: INSERT INTO import_sqlpush (model, data) VALUES ('res.partner', E'id\tref\tname\tcomment\nres_partner_PUSHME\tPUSHME\tPushed Customer\tThis is a test')
-        ids  = self.search(cr, uid, [('state','=','draft')])
-        errs = 0
+        def end_of_batch(ok_ids):
+            """Update imported records state and report progress on log"""
+            _logger.info('%s imported.' % len(ok_ids))
+            self.write(cr, uid, ok_ids, {'state': 'done', 'log': None})
+            cr.commit() 
+            ok_ids = []
+            
+        #_logger.info('Starting...')
+        batch_size = 100
+        ids     = self.search(cr, uid, [('state','=','draft')])
+        ok_ids  = []
+        errs    = 0
         for r in self.browse(cr, uid, ids, context=context):
             try:
                 log = "get model"
@@ -63,12 +73,16 @@ class import_sqlpush(osv.osv):
                 assert len(lines[0]) == len(lines[1]), "Header and rows must have same number of cols"
                 log = "try import"
                 res = model.import_data(cr, uid, lines[0], lines[1:], noupdate=r.noupdate)
-                self.write(cr, uid, [r.id], {'state': 'done', 'log': res}) 
+                ok_ids.append(r.id)
             except Exception, e:
-                errs += 1 
+                errs += 1
                 self.write(cr, uid, [r.id], {'state': 'cancel', 'log': 'On %s: %s' % (log, e) })
+            if len(ok_ids) % batch_size == 0:
+                end_of_batch(ok_ids)
+        if ok_ids:
+            end_of_batch(ok_ids)
         if errs:
-            _logger.warn('Errors found. Please check the SQLPush log table.')
+            _logger.warn('%s errors found. See the SQLPush table for details.' % errs)
         return True
     
     def do_purge(self, cr, uid, ids=None, lag=7, context=None):
