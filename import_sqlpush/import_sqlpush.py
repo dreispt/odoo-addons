@@ -34,6 +34,8 @@ class import_sqlpush(osv.osv):
         'state': fields.selection( [('draft', 'New'), ('cancel', 'Failed'), ('done','Done')], 
                                    'State', select=1), #Indexed for faster queries
         'log': fields.text('Execution Log'),
+        'options': fields.char('Option list', size=100,
+                   help='Example: "noupdate,delete"'),
     }
     _defaults = {
         'state': 'draft',
@@ -57,27 +59,50 @@ class import_sqlpush(osv.osv):
             self.write(cr, uid, ok_ids, {'state': 'done', 'log': None})
             cr.commit() 
             ok_ids = []
-            
-        #_logger.info('Starting...')
-        batch_size = 100
-        ids     = self.search(cr, uid, [('state','=','draft')])
+        _logger.debug('Starting...')
+        BATCH_SIZE = 100
+        
+        model_data = self.pool.get('ir.model.data')
+        model_name = ''
+        model   = None
         ok_ids  = []
         errs    = 0
+
+        ids = self.search(cr, uid, [('state','=','draft')])
         for r in self.browse(cr, uid, ids, context=context):
             try:
                 log = "get model"
-                model  = self.pool.get(r.model)
+                if model_name != r.model: #optimization 
+                    model_name = r.model
+                    model  = self.pool.get(model_name)
+                    
                 log = "get items"
                 lines = [x.split('\t') for x in r.data.split('\n')]
                 assert len(lines) > 1, "Data must have at least a header and a data row"
                 assert len(lines[0]) == len(lines[1]), "Header and rows must have same number of cols"
+                
+                log = "get options"
+                noupdate_flag = False
+                if r.options and 'noupdate' in r.options: 
+                    noupdate_flag = True 
+                #TODO: add a "retry" option
+                    
+                log = "unlink"
+                if r.options and 'unlink' in r.options:
+                    unlink_ids = model_data.search(cr, uid, [('model','=',r.model),('name','=',r.key_ref)] )
+                    if unlink_ids:
+                        model.unlink(cr, uid, unlink_ids, context=context)
+                
                 log = "try import"
-                res = model.import_data(cr, uid, lines[0], lines[1:], noupdate=r.noupdate)
+                res = model.import_data(cr, uid, lines[0], lines[1:], noupdate=noupdate_flag)
+                #print r.key_ref, res
                 ok_ids.append(r.id)
+                
             except Exception, e:
                 errs += 1
                 self.write(cr, uid, [r.id], {'state': 'cancel', 'log': 'On %s: %s' % (log, e) })
-            if len(ok_ids) % batch_size == 0:
+                
+            if ok_ids and len(ok_ids) % BATCH_SIZE == 0:
                 end_of_batch(ok_ids)
         if ok_ids:
             end_of_batch(ok_ids)
