@@ -95,8 +95,12 @@ class import_sqlpush(osv.osv):
                 
                 log = "try import"
                 res = model.import_data(cr, uid, lines[0], lines[1:], noupdate=noupdate_flag)
-                #print r.key_ref, res
-                ok_ids.append(r.id)
+                #print r.key_ref, noupdate_flag, res
+                if res[0]<0:
+                    errs += 1
+                    self.write(cr, uid, [r.id], {'state': 'cancel', 'log': 'Import error %s' % (res[2]) })
+                else:
+                    ok_ids.append(r.id)
                 
             except Exception, e:
                 errs += 1

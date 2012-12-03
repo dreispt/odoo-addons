@@ -24,7 +24,7 @@
 
 {
     'name': 'Import data pushed through SQL',
-    'version': '1.1',
+    'version': '1.2',
     'category': 'Tools',
     'description': """\
 Import data pushed through SQL.
