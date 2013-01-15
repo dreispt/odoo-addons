@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #    Daniel Reis
-#    
+#
 #    OpenERP, Open Source Management Solution
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -21,11 +21,17 @@
 
 import time
 import pooler
+#import tools
+#from tools.translate import _
 from tools.safe_eval import safe_eval
 from osv import fields, osv
 
 import logging
 _logger = logging.getLogger(__name__)
+
+#def printdbg(*args):
+#    for a in args: print a,
+#    print
 
 #TODO: implement this as an object, so it can be safely be accessed by "changed('state')" instead of "changed.get('state')"
 DEFAULT_EVALDICT = {
@@ -45,7 +51,7 @@ DEFAULT_EVALDICT = {
 #        ref, using %(object_ref)s
 #        translated state name, using %(object_state)s
 #        uppercase translated state name, using %(object_STATE)s
-#   * email_send() allows a custom subject line, that should be provided 
+#   * email_send() allows a custom subject line, that should be provided
 #     in the first line of the "body", using the prefix "Subject:".
 #
 ###############################################################################
@@ -54,9 +60,9 @@ class base_action_rule(osv.osv):
     _inherit = 'base.action.rule'
     _columns = {
         'trg_evalexpr': fields.text('Evaluated expression',\
-            help="""Python expression, with dictionaries available to query old, new and changed values: "old", "new" and "changed". These should be accessed using the .get() method. Also has available flags signaling the typo of operation: "creating" or "inserting",  "witing" or "updating"."""), 
+            help="""Python expression, able to use a "new" and "old" dictionaries, with the changed columns."""),
         'trg_evalexpr_dbg': fields.boolean('Debug Evaluated expression',\
-            help="""Write detailed information to log, to help debugging trigger expressions."""), 
+            help="""Write detailed information to log, to help debugging trigger expressions."""),
         'email_template_id': fields.many2one('email.template', 'E-mail template',
             domain="[('model_id','=',model_id)]" ),
         'email_template_force': fields.boolean('Send immediately',
@@ -68,7 +74,7 @@ class base_action_rule(osv.osv):
          if action.trg_evalexpr:
              #Test if expression is valid, against an empty dict
              #Newlines are tolerated
-             safe_eval(action.trg_evalexpr.replace('\n',' '), {}, DEFAULT_EVALDICT) 
+             safe_eval(action.trg_evalexpr.replace('\n',' '), {}, DEFAULT_EVALDICT)
          return True
 
     _constraints = [
@@ -87,14 +93,14 @@ class base_action_rule(osv.osv):
             context.update({
                 '_action_old': {},
                 '_action_new': vals,
+                '_action_trigger': 'create',
                 })
             new_id = old_create(cr, uid, vals, context=context)
             if not context.get('action'):
-                context.update( {'_action_trigger': 'create'} ) #activate trigger
                 self.post_action(cr, uid, [new_id], model, context=context)
             return new_id
         return wrapper
-    
+
     def _write(self, old_write, model, context=None):
         """
         Return a wrapper around `old_write` calling both `old_write` and
@@ -112,7 +118,7 @@ class base_action_rule(osv.osv):
                 '_action_new': vals,
                 })
             old_write(cr, uid, ids, vals, context=context)
-            if not context.get('action'):
+            if not context.get('action') and not context.get('_action_trigger'):
                 context.update( {'_action_trigger': 'write'} ) #activate trigger
                 self.post_action(cr, uid, ids, model, context=context)
             return True
@@ -126,16 +132,22 @@ class base_action_rule(osv.osv):
         ok = super(base_action_rule, self).do_check(cr, uid, action, obj, context=context)
         if ok and action.trg_evalexpr:
             ok = False
+            ######
+            ###printdbg('\n... Begin eval rule', action.name, action.id, '\n', action.trg_evalexpr)
+            ###if not context.get('_action_trigger'): printdbg('\tnot in _action_trigger')
+            ######
             if context.get('_action_trigger'):
                 # is_ins flag: signals inserting (create) or updating (write)
                 is_ins = context.get('_action_trigger') == 'create'
+                #rint '....is_ins = ', is_ins
                 #If no changed values, exit with False
                 #Abort if called from crm_case._action, to duplicate triggering
                 if not context.get('_action_new') or context.get('state_to'):
+                    ###printdbg('\texit', context.get('_action_new'), context.get('state_to') )
                     return False
                 # old dict: holds original values for all columns (before the write/update)
                 old = {}
-                for x in context.get('_action_old'): 
+                for x in context.get('_action_old'):
                     if x.get('id') == obj.id: #Old is a list of records
                         old = x
                         break
@@ -151,18 +163,17 @@ class base_action_rule(osv.osv):
                         if old.get(k) != v:
                             changed.update( {k: v} )
                 # new dict: result of applying changes to old (inlcudes non changed values)
-                new = dict(old) #copy dict content, not dict pointer 
+                new = dict(old) #copy dict content, not dict pointer
                 new.update(changed)
                 #Evaluate trigger expression
                 eval_dict = dict(DEFAULT_EVALDICT)
                 eval_dict.update({
                     'obj': obj, #allows object.notation
                     'old': old,
-                    'changed': changed, 
-                    'new': new, 
+                    'changed': changed,
+                    'new': new,
                     'inserting': is_ins, 'creating': is_ins,
                     'updating': not is_ins, 'writing': not is_ins,
-                    'uid': context.get('uid'),
                     })
                 if action.trg_evalexpr_dbg:
                     _logger.setLevel(logging.DEBUG)
@@ -170,40 +181,41 @@ class base_action_rule(osv.osv):
                     _logger.debug('CHG: %s' % str(changed))
                     _logger.debug('NEW: %s' % str(new))
                     _logger.debug('OLD: %s' % str(old))
+                    ###import pdb; pdb.set_trace() #####
                 #try: ...removed; leaving eval errors unhandled...
-                ok = safe_eval(action.trg_evalexpr.replace('\n', ' '), {}, eval_dict) 
+                ok = safe_eval(action.trg_evalexpr.replace('\n', ' '), {}, eval_dict)
                 if ok:
                     _logger.debug('RULE ACTIVATED: %s on record id %d.' % (action.name, obj.id) )
                     #rint '==>> RULE Activated:', action.name, action.trg_evalexpr, '====' #deepdebug
-                    #rint ' context = ', context
                     #rint ' old = ', eval_dict['old'] #deepdebug
                     #rint ' new = ', eval_dict['new'] #deepdebug
-                    #rint ' changed = ', eval_dict['changed']  #deepdebug
-                    #TODO?:
+                    #rint '  changed = ', eval_dict['changed']  #deepdebug
+                    #TODO?
                     #if not isinstance(ok, bool):
                     #    _logger.warn('Rule trigger %s on record id %d did not return a boolean.' % (action.name, obj.id) )
                 else:
                     if action.trg_evalexpr_dbg:
                         _logger.debug('Rule not activated: %s on record id %d.' % (action.name, obj.id) )
+                #except (ValueError, KeyError, TypeError):
+                #    _logger.error('Failed rule trigger %s on record id %d.' % (action.name, obj.id) )
+                #    ok = False
+                #rint '(eval rule %r = %s, record id %d.' % (ok, action.name, obj.id)
         return ok
 
-    #Action able to send e-mails using email_template; 
+    #Action able to send e-mails using email_template;
     #Bonus: messages sent are recorded in the communication history.
     def do_action(self, cr, uid, action, model_obj, obj, context=None):
         _logger.debug('Rule do_action: %s on record id %d.' % (action.name, obj.id) )
         super(base_action_rule, self).do_action(cr, uid, action, model_obj, obj, context=context)
         if action.email_template_id:
+            curr_obj = model_obj.browse(cr, uid, [obj.id], context=context)[0] ###reis: refresh object data changed by actions
             _logger.debug('Rule sending mail: using template %s.' % (action.email_template_id.name) )
             mail_template = self.pool.get('email.template')
             mail_message = self.pool.get('mail.message')
-            #update context with the most recent data; avoid empty context if running from scheduler 
-            curr_obj = model_obj.browse(cr, uid, [obj.id], context=context)[0] ###reis: refresh object data changed by actions
-            for field_name, field_definition in curr_obj._all_columns.items():
-                context[field_name] = getattr(curr_obj, field_name)
             msg_id = mail_template.send_mail(cr, uid, action.email_template_id, obj.id, context=context)
             #mail_template does not set the e-mail date by itself!
             mail_message.write(cr, uid, [msg_id], {'date': time.strftime('%Y-%m-%d %H:%M:%S'),}, context=context)
-            #send immediately, if the option is checked
+            #send immediatly, if the option is checked
             if action.email_template_force:
                 mail_message.send(cr, uid, [msg_id], context=context)
         return True
@@ -214,19 +226,16 @@ base_action_rule()
 #BUG https://bugs.launchpad.net/openobject-addons/+bug/944197
 class users(osv.osv):
     _inherit = "res.users"
-    
+
     def login(self, db, login, password):
         #Perform login
         user_id = super(users, self).login(db, login, password)
-        #Register hooks 
+        #Register hooks
         cr = pooler.get_db(db).cursor()
         rule_pool = pooler.get_pool(db).get('base.action.rule')
         rule_ids = rule_pool.search(cr, 1, [])
-        try:
-            rule_pool._register_hook(cr, 1, rule_ids)
-        except Exception, e: #in case of error, don't prevent the user from logging in
-            _logger.error('Cannot register hooks: %s' % e) 
-        rule_ids = None 
+        rule_pool._register_hook(cr, 1, rule_ids)
+        rule_ids = None
         cr.close()
         #End
         return user_id
