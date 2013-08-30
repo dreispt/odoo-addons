@@ -28,7 +28,7 @@
         'base_util_refcodes',
         'crm',
     ],
-    'installable': True,
+    'installable': False,
     'application': False,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

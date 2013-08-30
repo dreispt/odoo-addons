@@ -48,7 +48,7 @@ Example, check if responsible changed: updating and old.get('user_id') != new.ge
     'update_xml': ['base_action_rule_view.xml'],
     'demo_xml': [],
     'test': [],
-    'installable': True,
+    'installable': False,
     'application': False,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

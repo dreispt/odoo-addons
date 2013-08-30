@@ -57,7 +57,7 @@ Usage example:
     'images': [
         'images/refcode_hr_demo.png',
     ],
-    'installable': True,
+    'installable': False,
     'application': False,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

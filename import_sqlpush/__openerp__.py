@@ -42,7 +42,7 @@ Current supported keywords are "noupdate" and "unlink".
     'website':  'http://openerpmanagementsystem.blogspot.pt/',
     'depends':  ['base'],
     'data':     ['import_sqlpush_data.xml',],
-    'installable': True,
+    'installable': False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
