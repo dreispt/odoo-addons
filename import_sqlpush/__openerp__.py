@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Daniel Reis, 2012
+#    Daniel Reis, 2012 - 2013
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -24,25 +24,17 @@
 
 {
     'name': 'Import data pushed through SQL',
-    'version': '1.2',
+    'version': '2.0',
     'category': 'Tools',
     'description': """\
 Import data pushed through SQL.
 See: http://openerpmanagementsystem.blogspot.pt/2012/11/pushing-data-into-openerp.html
-
-CHANGELOG:
-1.1    
-The "noupdate" column was removed. It's replaced by the new "options" columns,
-allowing to signal multiple import options. An import option is activated if 
-it's keyword text is found in the "option" column. 
-Current supported keywords are "noupdate" and "unlink".
- 
     """,
     'author':   'Daniel Reis',
     'website':  'http://openerpmanagementsystem.blogspot.pt/',
     'depends':  ['base'],
     'data':     ['import_sqlpush_data.xml',],
-    'installable': False,
+    'installable': True,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
