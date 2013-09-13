@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
-#    
-#    Copyright (C) 2012 Daniel Reis
+#
+#    Copyright (C) 2012 - 2013 Daniel Reis
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -20,7 +20,7 @@
 
 {
     'name': 'CRM customer codes visible and searchable in form fields',
-    'version': '1',
+    'version': '1.1',
     "category": "Customer Relationship Management",
     'description': """Add reference code columns to CRM module""",
     'author': 'Daniel Reis',
@@ -28,7 +28,6 @@
         'base_util_refcodes',
         'crm',
     ],
-    'installable': False,
-    'application': False,
+    'installable': True,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

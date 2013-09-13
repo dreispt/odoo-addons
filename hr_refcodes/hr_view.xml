@@ -8,8 +8,8 @@
             <field name="inherit_id" ref="hr.view_department_form"/>
             <field name="arch" type="xml">
                 <field name="name" position="after">
-					<field name="ref"/>
-				</field>
+                    <field name="ref"/>
+                </field>
             </field>
         </record>
 
@@ -18,14 +18,11 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
-                <field name="parent_id" position="after">
-					<field name="code"/>
-				</field>
+                <field name="department_id" position="after">
+                    <field name="code"/>
+                </field>
             </field>
         </record>
 
     </data>
 </openerp>
-
-
-

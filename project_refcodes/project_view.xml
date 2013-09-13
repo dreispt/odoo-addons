@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-    
+
         <!-- PROJECT FORM add Code -->
-        <record id="project_project_form_dreis" model="ir.ui.view">
-            <field name="name">project_project_form_dreis</field>
+        <record id="project_project_form_addcode" model="ir.ui.view">
+            <field name="name">project_project_form_addcode</field>
             <field name="model">project.project</field>
             <field name="inherit_id" ref="project.edit_project"/>
             <field name="arch" type="xml">
 
-                <field name="name" position="replace">
-                    <field name="name" colspan="4"/>
+                <field name="priority" position="after">
                     <field name="code"/>
                 </field>
 

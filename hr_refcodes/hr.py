@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
-#    
-#    Copyright (C) 2012 Daniel Reis
+#
+#    Copyright (C) 2012 - 2013 Daniel Reis
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,24 +18,26 @@
 #
 ##############################################################################
 
-from osv import fields, osv
-from base_util_refcodes import name_tools
+from openerp.osv import fields, orm
+from openerp.addons.base_util_refcodes import name_tools
 
-class hr_department(osv.osv):
+
+class hr_department(orm.Model):
     _inherit = 'hr.department'
     _columns = {
-        'ref': fields.char('Internal code', size=20, help='Department internal code'),
+        'ref': fields.char('Internal code', size=20,
+                help='Department internal code'),
     }
     _order = 'ref'
 
     def name_get(self, cr, uid, ids, context=None):
-        return name_tools.extended_name_get(self, cr, uid, ids, '[%(ref)s] %(name)s', ['ref','name'], context=context)
-    
-    def name_search(self, cr, user, name='', args=None, operator='ilike', context=None, limit=100):
-        return name_tools.extended_name_search(self, cr, user, name, args, operator, context=context, limit=limit, 
-                                keys=['ref', 'name'])
-    
-hr_department()
+        return name_tools.extended_name_get(self, cr, uid, ids,
+            '[%(ref)s] %(name)s', ['ref', 'name'], context=context)
+
+    def name_search(self, cr, user, name='', args=None, operator='ilike',
+        context=None, limit=100):
+        return name_tools.extended_name_search(self, cr, user, name, args,
+            operator, context=context, limit=limit, keys=['ref', 'name'])
 
 
 class hr_employee(osv.osv):
@@ -43,13 +45,14 @@ class hr_employee(osv.osv):
     _columns = {
         'code': fields.char('Internal code', size=16),
     }
-    
+
     def name_get(self, cr, uid, ids, context=None):
-        return name_tools.extended_name_get(self, cr, uid, ids, '[%(code)s] %(name)s', ['code','name'], context=context)
-    
-    def name_search(self, cr, user, name='', args=None, operator='ilike', context=None, limit=100):
-        return name_tools.extended_name_search(self, cr, user, name, args, operator, context=context, limit=limit, 
-                                keys=['code','name'])
-hr_employee()
+        return name_tools.extended_name_get(self, cr, uid, ids,
+            '[%(code)s] %(name)s', ['code', 'name'], context=context)
+
+    def name_search(self, cr, user, name='', args=None, operator='ilike',
+        context=None, limit=100):
+        return name_tools.extended_name_search(self, cr, user, name, args,
+            operator, context=context, limit=limit, keys=['code', 'name'])
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

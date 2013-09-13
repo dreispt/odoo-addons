@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
-#    
-#    Copyright (C) 2012 Daniel Reis
+#
+#    Copyright (C) 2012 - 2013 Daniel Reis
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,14 +19,12 @@
 ##############################################################################
 
 {
-    'name': 'Analytic Account/Contract code visible and searchable in form fields',
-    'version': '1.0',
+    'name': 'Analytic Account/Contract code visible and searchable in fields',
+    'version': '1.1',
     'category': 'Project Management',
     'author': 'Daniel Reis',
-    'website': 'daniel.reis@securitas.pt',
     'depends': ['base_util_refcodes', 'project'],
     'update_xml': ['project_view.xml'],
-    'installable': False,
-    'application': False,
+    'installable': True,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

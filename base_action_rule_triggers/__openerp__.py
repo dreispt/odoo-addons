@@ -18,37 +18,11 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
-
 {
     'name': 'Automated Action Rules Trigger Extensions',
     'version': '6.1.1',
     'category': 'Sales Management',
-    'description': """Extensions to the Automated Actions module base_action_rule.
-
-Actions can be triggered from evaluated expression, using values from dictionaries 'old' and 'new'
-  new - is the dictionay passed to the create/write method, therefore. It contains _only_ the fields to write.
-  old - on create is an empty dict {} or None value; on write contains the all object values before the write is executed, as given by the read() method.
-It's recommended to access these dictionaries using teh get() method.
-Example, check if document was reopened: old.get('state') != 'open' and new.get('state') == 'open'
-
-The following boolean flags are also available for the expressions:
-  creating, inserting
-  writing, updating
-Example, check if responsible changed: updating and old.get('user_id') != new.get('user_id')
-""",
-    'author': 'Daniel Reis',
-    'website': 'https://launchpad.net/~dreis-pt',
-    'depends': [
-        'base_action_rule',
-        'crm', #crm_action_rule
-        'email_template',
-    ],
-    'init_xml': [],
-    'update_xml': ['base_action_rule_view.xml'],
-    'demo_xml': [],
-    'test': [],
+    'description': 'Deprecated due to v7 better Atumated Actions features',
     'installable': False,
-    'application': False,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
-#    
-#    Copyright (C) 2012 Daniel Reis
+#
+#    Copyright (C) 2012 - 2013 Daniel Reis
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,21 +18,20 @@
 #
 ##############################################################################
 
-from osv import fields, osv
-from base_util_refcodes import name_tools
+from openerp.osv import orm
+from openerp.addons.base_util_refcodes import name_tools
 
-class res_partner(osv.osv):
+
+class res_partner(orm.Model):
     _inherit = 'res.partner'
 
     def name_get(self, cr, uid, ids, context=None):
-        return name_tools.extended_name_get(self, cr, uid, ids, '[%(ref)s] %(name)s', ['ref', 'name'], context=context)
-        
-    def name_search(self, cr, user, name='', args=None, operator='ilike', context=None, limit=100):
-        return name_tools.extended_name_search(self, cr, user, name, args, operator, context=context, limit=limit, 
-                                keys=['ref','name'])
+        return name_tools.extended_name_get(self, cr, uid, ids,
+            '[%(ref)s] %(name)s', ['ref', 'name'], context=context)
 
-res_partner()
+    def name_search(self, cr, user, name='', args=None, operator='ilike',
+                    context=None, limit=100):
+        return name_tools.extended_name_search(self, cr, user, name, args,
+            operator, context=context, limit=limit, keys=['ref', 'name'])
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
-
-
