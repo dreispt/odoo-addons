@@ -22,11 +22,20 @@ from openerp.osv import orm
 
 
 def extended_name_get(obj, cr, uid, ids, name_mask, flds_templ, context=None):
-#Usage example :
-#    from base_name_tools import name_tools
-#    def name_get(self, cr, uid, ids, context=None):
-#        return name_tools.extended_name_get(self, cr, uid, ids,
-#           '[%(ref)s] %(name)s', ['ref', 'name'], context=context)
+    """
+    Flexible name_get() method, able to replace the ORM's default.
+    `name_mask`: the display template for the name. For example:
+                    '[%(ref)s] %(name)s'
+    `flds_templ`: the field names used in the template. Example:
+                     ['ref', 'name']
+
+    Usage example:
+
+    from base_name_tools import name_tools
+    def name_get(self, cr, uid, ids, context=None):
+        return name_tools.extended_name_get(self, cr, uid, ids,
+           '[%(ref)s] %(name)s', ['ref', 'name'], context=context)
+    """
     if not ids:
         return []
     if not name_mask:
@@ -35,25 +44,34 @@ def extended_name_get(obj, cr, uid, ids, name_mask, flds_templ, context=None):
     res = []
     for rec in obj.read(cr, uid, ids, flds_templ, context=context):
         for key in flds_templ:
+            if not rec[key]:
+                # Empty values iare replaced by empty string
+                rec[key] = ''
             if isinstance(rec[key], tuple):
+                # Tuple values (id, name) are replaced by the name
                 rec[key] = rec[key][1]
         try:
             n = name_mask % rec
         except:
-            n = '<name_get failed!>'
+            n = '<name_get failed!>'  # this should happen!
         res.append((rec['id'], n))
     return res
 
 
 def extended_name_search(obj, cr, user, name='', args=None, operator='ilike',
                             context=None, limit=100, keys=None):
-#Usage example:
-#    from base_name_tools import name_tools
-#    def name_search(self, cr, user, name='', args=None, operator='ilike',
-#        context=None, limit=100):
-#            return name_tools.extended_name_search(self, cr, user, name, args,
-#               operator, context=context, limit=limit,
-#               keys=['ref','name']) #<=edit list of fields to search
+    """
+    Flexible name_search() method, able to replace the ORM's default.
+    Just set `keys` to the list of fields you want to be searched.
+
+    Usage example:
+    from base_name_tools import name_tools
+    def name_search(self, cr, user, name='', args=None, operator='ilike',
+        context=None, limit=100):
+            return name_tools.extended_name_search(self, cr, user, name, args,
+               operator, context=context, limit=limit,
+               keys=['ref','name']) #<=edit list of fields to search
+    """
     args = args or []
     keys = keys or [name]
     if name:
