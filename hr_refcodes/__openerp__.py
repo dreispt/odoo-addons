@@ -18,10 +18,13 @@
 #
 ##############################################################################
 {
-    'name': 'HR codes visible and searchable in form fields',
-    'version': '6.2',
+    'name': 'Employee and Department codes visible and searchable in fields',
+    'version': '1.1',
     "category": "Human Resources",
-    'description': """Add reference code columns to HR module""",
+    'description': """\
+Adds reference codes fields for Employees and 
+Departments, and makes them visible and searchable in referencing fields.
+""",
     'author': 'Daniel Reis',
     'depends': [
         'base_util_refcodes',

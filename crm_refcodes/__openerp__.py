@@ -19,10 +19,13 @@
 ##############################################################################
 
 {
-    'name': 'CRM customer codes visible and searchable in form fields',
+    'name': 'Customer reference code visible and searchable in form fields',
     'version': '1.1',
-    "category": "Customer Relationship Management",
-    'description': """Add reference code columns to CRM module""",
+    'category': 'Customer Relationship Management',
+    'description': """\
+The customer "Reference" code is standard, and can be found in the
+Sales & Purchases tab.
+""",
     'author': 'Daniel Reis',
     'depends': [
         'base_util_refcodes',

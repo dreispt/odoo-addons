@@ -19,10 +19,14 @@
 ##############################################################################
 
 {
-    'name': 'Project code visible and searchable in form fields',
+    'name': 'Analytic Account reference code visible and searchable in fields',
     'version': '1.1',
     'category': 'Project Management',
     'author': 'Daniel Reis',
+    'description': """\
+The Analytic Account "Reference" code is standard, and can be found in the
+Analytic Account form.
+""",
     'depends': ['base_util_refcodes', 'analytic', ],
     'installable': True,
 }
