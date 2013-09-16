@@ -29,7 +29,7 @@ class import_sqlpush(orm.Model):
     _columns = {
         'model': fields.char('Model', size=40, required=True),
         'data': fields.text('Data', required=True),
-        'noupdate': fields.integer('No updates'),
+        'method': fields.char('API method', size=40),
         'key_ref': fields.char('Key Reference', size=100, select=1,
             help='Can be used to help the origin app to later track the '
                  'outcome of the import operation.'),
@@ -43,19 +43,51 @@ class import_sqlpush(orm.Model):
     }
     _defaults = {
         'state': 'draft',
+        'method': 'load',
     }
 
     def _install_init(self, cr, uid, ids=None, context=None):
-        """
-        Set default values on columns, to solve the fact that SQL INSERTs
-        bypass the ORM
-        """
-        cr.execute("ALTER TABLE ONLY import_sqlpush ALTER COLUMN state"
-                   " SET DEFAULT 'draft'")
-        cr.execute("ALTER TABLE ONLY import_sqlpush ALTER COLUMN create_uid"
-                    " SET DEFAULT 1")
-        cr.execute("ALTER TABLE ONLY import_sqlpush ALTER COLUMN create_date"
-                    " SET DEFAULT timezone('UTC'::text, now())")
+        """Set default values on columns, to solve the fact that SQL INSERTs bypass the ORM"""
+        cr.execute("CREATE EXTENSION IF NOT EXISTS plpythonu") 
+        cr.execute("ALTER TABLE ONLY import_sqlpush ALTER COLUMN state       SET DEFAULT 'draft'")
+        cr.execute("ALTER TABLE ONLY import_sqlpush ALTER COLUMN create_uid  SET DEFAULT 1")
+        cr.execute("ALTER TABLE ONLY import_sqlpush ALTER COLUMN create_date SET DEFAULT timezone('UTC'::text, now())")
+        cr.execute("""\
+CREATE OR REPLACE FUNCTION import_sqlpush_py()
+  RETURNS trigger AS
+  $$
+  import xmlrpclib
+  url = plpy.execute("SELECT value FROM ir_config_parameter WHERE key='web.base.url'")[0]["value"]
+  username = 'admin' #the user
+  pwd = 'admin'      #the password of the user
+  dbname = 'v7-pserv-port2'    #the database
+  # Get the uid
+  sock_common = xmlrpclib.ServerProxy ('%s/xmlrpc/common' % url)
+  uid = sock_common.login(dbname, username, pwd)
+
+  model = TD["new"]["model"]
+  raw_data = TD["new"]["data"]
+  data = [x.split('\t') for x in raw_data.split('\n')]
+  cols = data[0]
+  rows = data[1]
+  sock = xmlrpclib.ServerProxy('%s/xmlrpc/object' % url)
+  res  = sock.execute(dbname, uid, pwd, model, 'load', cols, [rows])
+
+  TD["new"]["log"] = repr(res)
+  TD["new"]["state"] = "done"
+  return "MODIFY"
+  $$
+    LANGUAGE plpythonu VOLATILE
+      COST 100;
+        """)
+        cr.execute("""\
+CREATE TRIGGER import_sqlpush_ins
+  BEFORE INSERT
+    ON import_sqlpush
+      FOR EACH ROW
+        WHEN ((((new.state)::text = 'draft'::text) OR (new.state IS NULL)))
+          EXECUTE PROCEDURE import_sqlpush_py();
+        """)
         return  True
 
     def do_import_data(self, cr, uid, ids=None, context=None):

@@ -2,8 +2,8 @@
 <openerp>
     <data noupdate="1">
 
-	    <!-- Initialize database table -->
-	    <function model="import.sqlpush" name="_install_init"/>
+        <!-- Initialize database table -->
+        <function model="import.sqlpush" name="_install_init"/>
 
         <!-- Scheduler job to run import -->
         <record id="ir_cron_import_sqlpush_action" model="ir.cron">
