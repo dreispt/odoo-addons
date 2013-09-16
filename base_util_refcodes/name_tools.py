@@ -46,7 +46,6 @@ def extended_name_get(obj, cr, uid, ids, name_mask, flds_templ, context=None):
 
     res = []
     for rec in obj.read(cr, uid, ids, flds_templ, context=context):
-        print flds_templ, rec
         for key in flds_templ:
             if not rec[key]:
                 # Empty values iare replaced by empty string
