@@ -25,7 +25,7 @@ from openerp.addons.base_util_refcodes import name_tools
 class hr_department(orm.Model):
     _inherit = 'hr.department'
     _columns = {
-        'ref': fields.char('Internal code', size=20,
+        'ref': fields.char('Reference Code', size=20,
                 help='Department internal code'),
     }
     _order = 'ref'
@@ -40,10 +40,10 @@ class hr_department(orm.Model):
             operator, context=context, limit=limit, keys=['ref', 'name'])
 
 
-class hr_employee(osv.osv):
+class hr_employee(orm.Model):
     _inherit = 'hr.employee'
     _columns = {
-        'code': fields.char('Internal code', size=16),
+        'code': fields.char('Reference Code', size=16),
     }
 
     def name_get(self, cr, uid, ids, context=None):

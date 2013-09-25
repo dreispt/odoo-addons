@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Configurable model name_get() descriptions',
-    'version': '1.1',
+    'version': '1.2',
     "category": "Tools",
     'description': """\
 Configurable model name_get() descriptions.

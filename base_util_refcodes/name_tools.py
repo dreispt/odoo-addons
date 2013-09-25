@@ -43,26 +43,25 @@ def extended_name_get(obj, cr, uid, ids, name_mask, flds_templ, context=None):
     # Ensure ids is a list, so that read() also returns a list
     if not isinstance(ids, list):
         ids = [ids]
-
+    flds_templ = list(set(flds_templ + ['name']))
     res = []
     for rec in obj.read(cr, uid, ids, flds_templ, context=context):
         for key in flds_templ:
-            if not rec[key]:
-                # Empty values iare replaced by empty string
-                rec[key] = ''
             if isinstance(rec[key], tuple):
                 # Tuple values (id, name) are replaced by the name
                 rec[key] = rec[key][1]
+            if not rec[key]:
+                del rec[key]
         try:
             n = name_mask % rec
         except:
-            n = '<name_get failed!>'  # this should happen!
+            n = rec['name']  # fallback to default name
         res.append((rec['id'], n))
     return res
 
 
 def extended_name_search(obj, cr, user, name='', args=None, operator='ilike',
-                            context=None, limit=100, keys=None):
+                         context=None, limit=100, keys=None):
     """
     Flexible name_search() method, able to replace the ORM's default.
     Just set `keys` to the list of fields you want to be searched.
