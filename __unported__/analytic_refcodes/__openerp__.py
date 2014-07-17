@@ -19,18 +19,15 @@
 ##############################################################################
 
 {
-    'name': "Project analytic account code visible and searchable in fields",
+    'name': 'Analytic Account reference code visible and searchable in fields',
     'version': '1.1',
     'category': 'Project Management',
     'author': 'Daniel Reis',
     'description': """\
-The Project "Reference" code is a standard field, inherited from the
-Analytic Account model.
-This module makes if also available in the Project's definitions form, under
-the "Other Info" tab.
+The Analytic Account "Reference" code is standard, and can be found in the
+Analytic Account form.
 """,
-    'depends': ['base_util_refcodes', 'project'],
-    'update_xml': ['project_view.xml'],
-    'installable': True,
+    'depends': ['base_util_refcodes', 'analytic', ],
+    'installable': False,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -17,17 +17,22 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
 {
-    'name': 'Analytic Account reference code visible and searchable in fields',
+    'name': 'Employee and Department codes visible and searchable in fields',
     'version': '1.1',
-    'category': 'Project Management',
-    'author': 'Daniel Reis',
+    "category": "Human Resources",
     'description': """\
-The Analytic Account "Reference" code is standard, and can be found in the
-Analytic Account form.
+Adds reference codes fields for Employees and 
+Departments, and makes them visible and searchable in referencing fields.
 """,
-    'depends': ['base_util_refcodes', 'analytic', ],
-    'installable': True,
+    'author': 'Daniel Reis',
+    'depends': [
+        'base_util_refcodes',
+        'hr',
+    ],
+    'update_xml': [
+        'hr_view.xml',
+    ],
+    'installable': False,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

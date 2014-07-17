@@ -19,18 +19,18 @@
 ##############################################################################
 
 {
-    'name': 'Customer reference code visible and searchable in form fields',
+    'name': "Project analytic account code visible and searchable in fields",
     'version': '1.1',
-    'category': 'Customer Relationship Management',
-    'description': """\
-The customer "Reference" code is standard, and can be found in the
-Sales & Purchases tab.
-""",
+    'category': 'Project Management',
     'author': 'Daniel Reis',
-    'depends': [
-        'base_util_refcodes',
-        'crm',
-    ],
-    'installable': True,
+    'description': """\
+The Project "Reference" code is a standard field, inherited from the
+Analytic Account model.
+This module makes if also available in the Project's definitions form, under
+the "Other Info" tab.
+""",
+    'depends': ['base_util_refcodes', 'project'],
+    'update_xml': ['project_view.xml'],
+    'installable': False,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

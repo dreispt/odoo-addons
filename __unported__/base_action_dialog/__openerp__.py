@@ -32,5 +32,5 @@ Use a Server Action action of Python Code type, with:
     'author': 'Daniel Reis',
     'depends': ['base'],
     'data': [],
-    'installable': True,
+    'installable': False,
 }
