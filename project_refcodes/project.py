@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2012 - 2013 Daniel Reis
+#    Copyright (C) 2012 Daniel Reis
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -17,21 +17,21 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-    'name': 'Employee and Department codes visible and searchable in fields',
-    'version': '1.1',
-    "category": "Human Resources",
-    'description': """\
-Adds reference codes fields for Employees and
-Departments, and makes them visible and searchable in referencing fields.
-""",
-    'author': 'Daniel Reis',
-    'depends': [
-        'base_util_refcodes',
-        'hr',
-    ],
-    'update_xml': [
-        'hr_view.xml',
-    ],
-    'installable': True,
-}
+
+from openerp.osv import orm
+from openerp.addons.base_util_refcodes import name_tools
+
+
+class project(orm.Model):
+    _inherit = 'project.project'
+
+    def name_get(self, cr, uid, ids, context=None):
+        return name_tools.extended_name_get(
+            self, cr, uid, ids,
+            '[%(code)s] %(name)s', ['code', 'name'], context=context)
+
+    def name_search(self, cr, user, name='', args=None, operator='ilike',
+                    context=None, limit=100):
+        return name_tools.extended_name_search(
+            self, cr, user, name, args,
+            operator, context=context, limit=limit, keys=['code', 'name'])

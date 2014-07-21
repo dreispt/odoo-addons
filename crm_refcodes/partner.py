@@ -26,12 +26,12 @@ class res_partner(orm.Model):
     _inherit = 'res.partner'
 
     def name_get(self, cr, uid, ids, context=None):
-        return name_tools.extended_name_get(self, cr, uid, ids,
+        return name_tools.extended_name_get(
+            self, cr, uid, ids,
             '[%(ref)s] %(name)s', ['ref', 'name'], context=context)
 
     def name_search(self, cr, user, name='', args=None, operator='ilike',
                     context=None, limit=100):
-        return name_tools.extended_name_search(self, cr, user, name, args,
+        return name_tools.extended_name_search(
+            self, cr, user, name, args,
             operator, context=context, limit=limit, keys=['ref', 'name'])
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

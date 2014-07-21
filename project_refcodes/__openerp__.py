@@ -17,21 +17,19 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+
 {
-    'name': 'Employee and Department codes visible and searchable in fields',
+    'name': "Project analytic account code visible and searchable in fields",
     'version': '1.1',
-    "category": "Human Resources",
-    'description': """\
-Adds reference codes fields for Employees and
-Departments, and makes them visible and searchable in referencing fields.
-""",
+    'category': 'Project Management',
     'author': 'Daniel Reis',
-    'depends': [
-        'base_util_refcodes',
-        'hr',
-    ],
-    'update_xml': [
-        'hr_view.xml',
-    ],
+    'description': """\
+The Project "Reference" code is a standard field, inherited from the
+Analytic Account model.
+This module makes if also available in the Project's definitions form, under
+the "Other Info" tab.
+""",
+    'depends': ['base_util_refcodes', 'project'],
+    'update_xml': ['project_view.xml'],
     'installable': True,
 }

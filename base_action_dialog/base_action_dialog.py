@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2012 - 2013 Daniel Reis
+#    Copyright (C) 2013 Daniel Reis
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -17,21 +17,13 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-    'name': 'Employee and Department codes visible and searchable in fields',
-    'version': '1.1',
-    "category": "Human Resources",
-    'description': """\
-Adds reference codes fields for Employees and
-Departments, and makes them visible and searchable in referencing fields.
-""",
-    'author': 'Daniel Reis',
-    'depends': [
-        'base_util_refcodes',
-        'hr',
-    ],
-    'update_xml': [
-        'hr_view.xml',
-    ],
-    'installable': True,
-}
+
+from openerp.osv import orm
+from openerp.tools.translate import _
+
+
+class BaseActionDialog(orm.AbstractModel):
+    _name = 'base.action.dialog'
+
+    def error(self, cr, uid, ids, message, title=None, context=None):
+        raise orm.except_orm(title or _("Error!"), message)

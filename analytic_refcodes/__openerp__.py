@@ -28,6 +28,5 @@ The Analytic Account "Reference" code is standard, and can be found in the
 Analytic Account form.
 """,
     'depends': ['base_util_refcodes', 'analytic', ],
-    'installable': False,
+    'installable': True,
 }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

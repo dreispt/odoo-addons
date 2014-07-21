@@ -86,5 +86,3 @@ def extended_name_search(obj, cr, user, name='', args=None, operator='ilike',
         ids = obj.search(cr, user, args, limit=limit, context=context)
     result = obj.name_get(cr, user, ids, context=context)
     return result
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

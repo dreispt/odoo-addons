@@ -25,18 +25,20 @@ from openerp.addons.base_util_refcodes import name_tools
 class hr_department(orm.Model):
     _inherit = 'hr.department'
     _columns = {
-        'ref': fields.char('Reference Code', size=20,
-                help='Department internal code'),
+        'ref': fields.char(
+            'Reference Code', size=20, help='Department internal code'),
     }
     _order = 'ref'
 
     def name_get(self, cr, uid, ids, context=None):
-        return name_tools.extended_name_get(self, cr, uid, ids,
+        return name_tools.extended_name_get(
+            self, cr, uid, ids,
             '[%(ref)s] %(name)s', ['ref', 'name'], context=context)
 
     def name_search(self, cr, user, name='', args=None, operator='ilike',
-        context=None, limit=100):
-        return name_tools.extended_name_search(self, cr, user, name, args,
+                    context=None, limit=100):
+        return name_tools.extended_name_search(
+            self, cr, user, name, args,
             operator, context=context, limit=limit, keys=['ref', 'name'])
 
 
@@ -47,12 +49,12 @@ class hr_employee(orm.Model):
     }
 
     def name_get(self, cr, uid, ids, context=None):
-        return name_tools.extended_name_get(self, cr, uid, ids,
+        return name_tools.extended_name_get(
+            self, cr, uid, ids,
             '[%(code)s] %(name)s', ['code', 'name'], context=context)
 
     def name_search(self, cr, user, name='', args=None, operator='ilike',
-        context=None, limit=100):
-        return name_tools.extended_name_search(self, cr, user, name, args,
+                    context=None, limit=100):
+        return name_tools.extended_name_search(
+            self, cr, user, name, args,
             operator, context=context, limit=limit, keys=['code', 'name'])
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
