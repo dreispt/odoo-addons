@@ -30,6 +30,6 @@ This module makes if also available in the Project's definitions form, under
 the "Other Info" tab.
 """,
     'depends': ['base_util_refcodes', 'project'],
-    'update_xml': ['project_view.xml'],
+    'data': [],
     'installable': True,
 }

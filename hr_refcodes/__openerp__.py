@@ -30,7 +30,7 @@ Departments, and makes them visible and searchable in referencing fields.
         'base_util_refcodes',
         'hr',
     ],
-    'update_xml': [
+    'data': [
         'hr_view.xml',
     ],
     'installable': True,
