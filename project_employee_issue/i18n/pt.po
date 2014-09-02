@@ -1,0 +1,58 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* project_issue_employee
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 8.0alpha1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-07-04 07:44+0000\n"
+"PO-Revision-Date: 2014-07-04 08:45-0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: pt\n"
+"X-Generator: Poedit 1.6.5\n"
+
+#. module: project_issue_employee
+#: field:project.issue,employee_id:0 field:project.project,use_employee:0
+msgid "Employee"
+msgstr "Empregado"
+
+#. module: project_issue_employee
+#: selection:project.project,use_employee:0
+msgid "No"
+msgstr "Não"
+
+#. module: project_issue_employee
+#: selection:project.project,use_employee:0
+msgid "Optional"
+msgstr "Opcional"
+
+#. module: project_issue_employee
+#: model:ir.model,name:project_issue_employee.model_project_project
+msgid "Project"
+msgstr "Projeto"
+
+#. module: project_issue_employee
+#: model:ir.model,name:project_issue_employee.model_project_issue
+msgid "Project Issue"
+msgstr "Incidente do Projeto"
+
+#. module: project_issue_employee
+#: selection:project.project,use_employee:0
+msgid "Required"
+msgstr "Obrigatorio"
+
+#. module: project_issue_employee
+#: field:project.issue,use_employee:0
+msgid "Use Employee"
+msgstr "Usar Empregado"
+
+#. module: project_issue_employee
+#: view:project.issue:0
+msgid "onchange_project(project_id)"
+msgstr "onchange_project(project_id)"

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="project_task_form_view" model="ir.ui.view">
+            <field name="name">project_task_form_view</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+
+               <field name="categ_ids" position="after">
+                    <field name="use_employee" invisible="1"/>
+                    <field name="employee_id"
+                           attrs="{'invisible':[('use_employee','not in',['yes','req'])],'required':[('use_employee','=','req')]}"/>
+               </field>
+
+               <!-- Use on_change on Project to force updating of "related" fields, used in attrs rules -->
+               <field name="project_id" position="attributes">
+                    <attribute name="on_change">onchange_project(project_id)</attribute>
+               </field>
+
+            </field>
+        </record>
+
+    </data>
+</openerp>

@@ -1,0 +1,47 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* project_employee_base
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0rc1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-09-02 16:09+0000\n"
+"PO-Revision-Date: 2014-09-02 16:09+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: project_employee_base
+#: help:project.project,use_employee:0
+msgid "Make Employee field visible on Project Task"
+msgstr ""
+
+#. module: project_employee_base
+#: selection:project.project,use_employee:0
+msgid "No"
+msgstr ""
+
+#. module: project_employee_base
+#: selection:project.project,use_employee:0
+msgid "Optional"
+msgstr ""
+
+#. module: project_employee_base
+#: model:ir.model,name:project_employee_base.model_project_project
+msgid "Project"
+msgstr ""
+
+#. module: project_employee_base
+#: selection:project.project,use_employee:0
+msgid "Required"
+msgstr ""
+
+#. module: project_employee_base
+#: field:project.project,use_employee:0
+msgid "Use Employee"
+msgstr ""
+
