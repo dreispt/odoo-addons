@@ -41,7 +41,7 @@ Note: this module evolved from ``import_sqlpush``, available for 6.1 and is
 intended to be used as a replacement technique for it.
     """,
     'author':   'Daniel Reis',
-    'website':  'http://openerpmanagementsystem.blogspot.pt/',
+    'website':  'https://github.com/dreispt/odoo-addons',
     'depends':  ['base'],
     'data':     ['import_loader_data.xml'],
     'installable': True,

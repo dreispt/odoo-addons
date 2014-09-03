@@ -46,7 +46,7 @@ class import_loader(orm.Model):
         data_list = eval(
             values.get('data'),
             {'null': '', 'Null': '', 'true': '1', 'false': '0'})
-        #import pudb; pudb.set_trace()
+
         for rec in data_list:
             model_name = rec.pop('_model')
             model = self.pool[model_name]  # Exit loudly on error
