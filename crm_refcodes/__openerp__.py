@@ -29,7 +29,7 @@ Sales & Purchases tab.
     'author': 'Daniel Reis',
     'depends': [
         'base_util_refcodes',
-        'crm',
+        'base',
     ],
     'installable': True,
 }
