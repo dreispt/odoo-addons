@@ -24,6 +24,7 @@ from openerp.tools.translate import _
 
 class BaseActionDialog(orm.AbstractModel):
     _name = 'base.action.dialog'
+    _description = "Action Dialog"
 
     def error(self, cr, uid, ids, message, title=None, context=None):
         raise orm.except_orm(title or _("Error!"), message)
