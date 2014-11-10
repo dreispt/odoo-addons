@@ -25,7 +25,7 @@
 {
     'name': 'Import Loader',
     'summary': 'Use the create() method as a proxy for load()',
-    'version': '2.0',
+    'version': '3.0',
     'category': 'Tools',
     'description': """\
 In some data integrations scenarios, you have API access to the ORM, but
@@ -43,6 +43,6 @@ intended to be used as a replacement technique for it.
     'author':   'Daniel Reis',
     'website':  'https://github.com/dreispt/odoo-addons',
     'depends':  ['base'],
-    'data':     ['import_loader_data.xml'],
+    'data':     [],
     'installable': True,
 }

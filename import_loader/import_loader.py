@@ -18,26 +18,22 @@
 #
 ##############################################################################
 
-from openerp.osv import fields, orm
+from openerp import models, fields, api
 from openerp.tools.safe_eval import safe_eval as eval
 
 
-class import_loader(orm.Model):
+class import_loader(models.TransientModel):
     _name = 'import.loader'
     _description = 'Import Loader'
-    _columns = {
-        'data': fields.text('Data', required=True),
-        'xmlid': fields.text('XML Id', readonly=True),
-        'state': fields.selection(
-            [('draft', 'New'), ('cancel', 'Failed'), ('done', 'Done')],
-            'State', select=1),
-        'log': fields.text('Execution Log'),
-    }
-    _defaults = {
-        'state': 'draft',
-    }
+    data = fields.Text('Data', required=True)
+    xmlid = fields.Text('XML Id', readonly=True)
+    state = fields.Selection(
+        [('draft', 'New'), ('cancel', 'Failed'), ('done', 'Done')],
+        'State', default='draft', index=True)
+    log = fields.Text('Execution Log')
 
-    def create(self, cr, uid, values, context=None):
+    @api.model
+    def create(self, values):
         """On new record creation, execute the corresponding data import"""
 
         # TODO: support for option flags
@@ -46,8 +42,12 @@ class import_loader(orm.Model):
         data_list = eval(
             values.get('data'),
             {'null': '', 'Null': '', 'true': '1', 'false': '0'})
+        assert isinstance(data_list, list)
 
+        cr, uid, ctx = self.env.cr, self.env.uid, self.env.context
         for rec in data_list:
+            assert isinstance(rec, dict)
+            assert rec.get('_model')
             model_name = rec.pop('_model')
             model = self.pool[model_name]  # Exit loudly on error
 
@@ -57,9 +57,9 @@ class import_loader(orm.Model):
             fields = rec.keys()
             columns = [str(x) for x in rec.values()]
 
-            res = model.load(cr, uid, fields, [columns], context=context)
+            res = model.load(cr, uid, fields, [columns], context=ctx)
             if 'ids' not in res:
-                raise orm.except_orm(repr(res))
+                raise Exception(repr(res))
 
             if 'id' in rec:
                 xmlids_list.append(rec['id'])
@@ -69,13 +69,5 @@ class import_loader(orm.Model):
             'state': 'done',
             'log': repr(log_list),
             'xmlid': ','.join(xmlids_list)})
-        res = super(import_loader, self).create(
-            cr, uid, values, context=context)
+        res = super(import_loader, self).create(values)
         return res
-
-    def do_purge(self, cr, uid, ids=None, lag=7, context=None):
-        """Delete processed records older than `lag` days"""
-        cr.execute(
-            "DELETE FROM import_loader WHERE state<>'draft'"
-            " AND write_date < now() - interval '%d' day" % lag)
-        return True
