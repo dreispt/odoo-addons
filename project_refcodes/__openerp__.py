@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2012 - 2013 Daniel Reis
-#
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
 #    published by the Free Software Foundation, either version 3 of the
@@ -23,12 +21,6 @@
     'version': '1.1',
     'category': 'Project Management',
     'author': 'Daniel Reis',
-    'description': """\
-The Project "Reference" code is a standard field, inherited from the
-Analytic Account model.
-This module makes if also available in the Project's definitions form, under
-the "Other Info" tab.
-""",
     'depends': ['base_util_refcodes', 'project'],
     'data': [],
     'installable': True,

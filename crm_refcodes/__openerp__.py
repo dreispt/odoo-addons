@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2012 - 2013 Daniel Reis
-#
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
 #    published by the Free Software Foundation, either version 3 of the
@@ -22,10 +20,6 @@
     'name': 'Customer reference code visible and searchable in form fields',
     'version': '1.1',
     'category': 'Customer Relationship Management',
-    'description': """\
-The customer "Reference" code is standard, and can be found in the
-Sales & Purchases tab.
-""",
     'author': 'Daniel Reis',
     'depends': [
         'base_util_refcodes',

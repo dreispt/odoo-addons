@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2014 Hugo Santos
-#
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
 #    published by the Free Software Foundation, either version 3 of the
@@ -23,10 +21,6 @@
     'summary': 'Handle employee related service requests',
     'version': '1.0',
     'category': 'Human Resources',
-    'description': """\
-Allow to related project Issues to Employees.
-With this you can handle HR service desk requests, such as requests to
-change personal data or payroll related complains.""",
     'author': 'Hugo Santos',
     'depends': [
         'project_employee_base',

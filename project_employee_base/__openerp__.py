@@ -23,9 +23,6 @@
     'summary': 'Handle employee related service requests',
     'version': '1.0',
     'category': 'Human Resources',
-    'description': """\
-Add a Project setting to enable relating docuemnts to employees.
-""",
     'author': 'Hugo Santos',
     'depends': [
         'project',

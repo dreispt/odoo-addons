@@ -23,9 +23,6 @@
     'summary': 'Handle employee related Tasks',
     'version': '1.0',
     'category': 'Human Resources',
-    'description': """\
-Allow relating Proejct Tasks to Employees.
-""",
     'author': 'Hugo Santos',
     'depends': [
         'project_employee_base',
