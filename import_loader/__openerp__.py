@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Securitas Portugal SA, Daniel Reis, 2012 - 2013
-#
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
 #    published by the Free Software Foundation, either version 3 of the
@@ -27,22 +25,9 @@
     'summary': 'Use the create() method as a proxy for load()',
     'version': '3.0',
     'category': 'Tools',
-    'description': """\
-In some data integrations scenarios, you have API access to the ORM, but
-limited to the ``create()`` and ``write()`` methods.
-It's the case for Pentaho PDI/Kettle and Talend Data Integration.
-
-
-This module provides a workaround to import data using the ``load()`` method:
-``create`` calls on the ``import-loader`` model fire ``load`` operations on
-the desired models.
-
-Note: this module evolved from ``import_sqlpush``, available for 6.1 and is
-intended to be used as a replacement technique for it.
-    """,
-    'author':   'Daniel Reis',
-    'website':  'https://github.com/dreispt/odoo-addons',
-    'depends':  ['base'],
-    'data':     [],
+    'author': 'Daniel Reis',
+    'website': 'https://github.com/dreispt/odoo-addons',
+    'depends': ['base'],
+    'data': [],
     'installable': True,
 }

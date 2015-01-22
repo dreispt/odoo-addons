@@ -1,2 +1,1 @@
-# -*- coding: utf-8 -*-
-import import_loader
+from . import import_loader

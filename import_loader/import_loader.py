@@ -22,42 +22,46 @@ from openerp import models, fields, api
 from openerp.tools.safe_eval import safe_eval as eval
 
 
+def js2py(text):
+    """ Converts a string with js/JSON data into a Python data structure """
+    return eval(text, {'null': '', 'Null': '', 'true': '1', 'false': '0'})
+
+
 class import_loader(models.TransientModel):
     _name = 'import.loader'
     _description = 'Import Loader'
+
     data = fields.Text('Data', required=True)
-    xmlid = fields.Text('XML Id', readonly=True)
     state = fields.Selection(
         [('draft', 'New'), ('cancel', 'Failed'), ('done', 'Done')],
         'State', default='draft', index=True)
     log = fields.Text('Execution Log')
+    xmlid = fields.Text('XML Id Info', readonly=True)
 
     @api.model
     def create(self, values):
-        """On new record creation, execute the corresponding data import"""
+        """
+        On new record creation, execute the corresponding data import
+        The `data` field is expected to have a list of dictionaries
+        """
 
-        # TODO: support for option flags
         xmlids_list = []
         log_list = []
-        data_list = eval(
-            values.get('data'),
-            {'null': '', 'Null': '', 'true': '1', 'false': '0'})
+        data_list = js2py(values['data'])
         assert isinstance(data_list, list)
 
-        cr, uid, ctx = self.env.cr, self.env.uid, self.env.context
         for rec in data_list:
             assert isinstance(rec, dict)
-            assert rec.get('_model')
+            assert rec.get('_model')  # mandatory key
             model_name = rec.pop('_model')
-            model = self.pool[model_name]  # Exit loudly on error
+            model = self.env[model_name]  # Exit loudly on error
 
             if '.id' in rec and not rec.get('.id'):
-                rec.pop('.id')
-
+                rec.pop('.id')  # empty .id columns are removed
             fields = rec.keys()
-            columns = [str(x) for x in rec.values()]
+            columns = map(str, rec.values())
+            res = model.load(fields, [columns])
 
-            res = model.load(cr, uid, fields, [columns], context=ctx)
             if 'ids' not in res:
                 raise Exception(repr(res))
 
@@ -69,5 +73,4 @@ class import_loader(models.TransientModel):
             'state': 'done',
             'log': repr(log_list),
             'xmlid': ','.join(xmlids_list)})
-        res = super(import_loader, self).create(values)
-        return res
+        return super(import_loader, self).create(values)
