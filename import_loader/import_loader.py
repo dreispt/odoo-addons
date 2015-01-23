@@ -56,8 +56,13 @@ class import_loader(models.TransientModel):
             model_name = rec.pop('_model')
             model = self.env[model_name]  # Exit loudly on error
 
+            # Add __export__ prefix to XML Ids
+            if 'id' in rec and '.' not in rec['id']:
+                rec['id'] = '__export__.%s' % rec['id']
+            # Remove empty .id columns
             if '.id' in rec and not rec.get('.id'):
-                rec.pop('.id')  # empty .id columns are removed
+                rec.pop('.id')
+
             fields = rec.keys()
             columns = map(str, rec.values())
             res = model.load(fields, [columns])
