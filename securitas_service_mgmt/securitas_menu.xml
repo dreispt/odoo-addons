@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+      <menuitem id="securitas_menu"
+          name="Securitas"
+          groups="base.group_user"
+          sequence="1" />
+
+       <menuitem id="securitas_menu_com"
+          name="Comunicação"
+          parent="securitas_menu"
+          groups="base.group_user"
+          sequence="10" />
+
+      <menuitem id="securitas_menu_inbox"
+          name="Mensagens"
+          parent="securitas_menu_com"
+          action="mail.action_mail_inbox_feeds"
+          groups="base.group_user"
+          sequence="10" />
+
+
+      <menuitem id="securitas_menu_pedidos"
+          name="Pedidos"
+          parent="securitas_menu"
+          groups="base.group_user"
+          sequence="20" />
+
+      <act_window id="securitas_action_project_inf"
+          name="Pedidos Informática"
+          res_model="project.issue"
+          view_mode="kanban,tree,form"
+          context="{'default_project_id': 1379998}"
+          domain="[('project_id','=',1379998)]" />
+      <menuitem id="securitas_menu_inf"
+          name="Informática"
+          parent="securitas_menu_pedidos"
+          action="securitas_action_project_inf"
+          groups="base.group_user"
+          sequence="20" />
+
+      <act_window id="securitas_action_project_ati"
+          name="Pedidos Assistência ATI"
+          res_model="project.task"
+          view_mode="kanban,tree,form"
+          context="{'default_project_id': 1380008}"
+          domain="[('project_id', '=', 1380008)]" />
+      <menuitem id="securitas_menu_ati"
+          name="Assistência ATI"
+          parent="securitas_menu_pedidos"
+          action="securitas_action_project_ati"
+          groups="base.group_user"
+          sequence="30" />
+
+      <menuitem id="securitas_menu_all"
+          name="Outros"
+          parent="securitas_menu_pedidos"
+          action="project.open_view_project_all"
+          groups="base.group_user"
+          sequence="90" />
+
+
+  </data>
+</openerp>

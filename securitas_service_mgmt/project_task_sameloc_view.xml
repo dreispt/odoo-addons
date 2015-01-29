@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="project_view_task_form_sameloc" model="ir.ui.view">
+            <field name="name">project_view_task_form_sameloc</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+
+                <notebook position="before">
+                  <group name="sameloc_tasks" string="Outros incidentes no mesmo local"
+                         attrs="{'invisible':[('sameloc_tasks','=',[])]}">
+                    <field name="sameloc_tasks" nolabel="1"/>
+                  </group>
+                </notebook>
+
+           </field>
+        </record>
+
+    </data>
+</openerp>

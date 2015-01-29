@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Project Issue form -->
+        <record id="project_task_form_view_securitas" model="ir.ui.view">
+            <field name="name">project_task_form_view_securitas</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="service_desk.view_project_task_form_sdesk"/>
+            <field name="arch" type="xml">
+
+                <field name="name" position="attributes">
+                    <attribute name="class" />
+                </field>
+
+                <field name="reviewer_id" position="attributes">
+                    <attribute name="string">Aberto por</attribute>
+                </field>
+
+                <!--
+                <field name="partner_id" position="replace" />
+
+                <field name="analytic_account_id" position="after">
+                    <field name="partner_id" readonly="1" string="Cliente"
+                           attrs="{'invisible':[('use_analytic_account','not in',['yes','req'])]}"/>
+                </field>
+                -->
+
+                <field name="location_id" position="after">
+                    <field name="location_street" readonly="1" string="Morada"
+                           attrs="{'invisible':[('use_analytic_account','not in',['yes','req'])]}"/>
+                </field>
+
+           </field>
+        </record>
+
+        <record id="project_task_form_view_deptreq" model="ir.ui.view">
+            <field name="name">project_task_form_view_deptreq</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project_task_department.view_task_form2"/>
+            <field name="arch" type="xml">
+
+                <field name="department_id" position="attributes">
+                    <attribute name="attrs">{'required':[('use_analytic_account','in',['yes','req'])]}</attribute>
+                </field>
+
+           </field>
+        </record>
+
+        <!-- Project Task Kanban  -->
+        <record model="ir.ui.view" id="project_task_kanban_securitas">
+            <field name="name">project_task_kanban_securitas</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_kanban"/>
+            <field name="arch" type="xml">
+                <field name="project_id" position="after">
+                    <field name="use_analytic_account" invisible="1"/>
+                    <field name="partner_id"
+                           attrs="{'invisible':[('use_analytic_account','not in',['yes','req'])]}"/>
+                </field>
+                <field name="project_id" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>
