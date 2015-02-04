@@ -50,6 +50,7 @@ class import_loader(models.TransientModel):
         data_list = js2py(values['data'])
         assert isinstance(data_list, list)
 
+        state = 'done'
         for rec in data_list:
             assert isinstance(rec, dict)
             assert rec.get('_model')  # mandatory key
@@ -57,25 +58,27 @@ class import_loader(models.TransientModel):
             model = self.env[model_name]  # Exit loudly on error
 
             # Add __export__ prefix to XML Ids
-            if 'id' in rec and '.' not in rec['id']:
-                rec['id'] = '__export__.%s' % rec['id']
+            for field in rec.keys():
+                if field == 'id' or field.endswith('/id'):
+                    if rec[field] and '.' not in rec[field]:
+                        rec[field] = '__export__.%s' % rec[field]
             # Remove empty .id columns
             if '.id' in rec and not rec.get('.id'):
                 rec.pop('.id')
 
-            fields = rec.keys()
             columns = map(str, rec.values())
-            res = model.load(fields, [columns])
+            res = model.load(rec.keys(), [columns])
 
-            if 'ids' not in res:
-                raise Exception(repr(res))
+            if res.get('messages'):  # error found
+                # raise Exception(repr(res))
+                state = 'cancel'
 
             if 'id' in rec:
                 xmlids_list.append(rec['id'])
             log_list.append(res)
 
         values.update({
-            'state': 'done',
+            'state': state,
             'log': repr(log_list),
             'xmlid': ','.join(xmlids_list)})
         return super(import_loader, self).create(values)
