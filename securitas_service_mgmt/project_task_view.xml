@@ -47,6 +47,21 @@
            </field>
         </record>
 
+        <!-- Task list view -->
+        <record id="project_task_tree_view_securitas" model="ir.ui.view">
+            <field name="name">Securitas Task List Customizations</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_tree2"/>
+            <field name="arch" type="xml">
+
+                <field name="project_id" position="before">
+                    <field name="department_id" />
+                    <field name="reviewer_id" string="Contact" />
+                </field>
+
+           </field>
+        </record>
+
         <!-- Project Task Kanban  -->
         <record model="ir.ui.view" id="project_task_kanban_securitas">
             <field name="name">project_task_kanban_securitas</field>
