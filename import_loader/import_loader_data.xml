@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<openerp>
+    <data noupdate="1">
+
+        <!-- Scheduler job to run import -->
+        <record id="import_loader_cron_action" model="ir.cron">
+            <field name="name">Import Loaded Data</field>
+            <field name="interval_number">5</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="doall">False</field>
+            <field name="model">import.loader</field>
+            <field name="function">do_cron_import</field>
+            <field name="args">()</field>
+        </record>
+    </data>
+    <data>
+        <function model="import.loader" name="_fix_model_data" />
+    </data>
+</openerp>

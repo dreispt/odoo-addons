@@ -1,0 +1,5 @@
+-
+Load records
+-
+  !python {model: import.loader}: |
+      self.create(cr, uid, {'data': "[{'_model': 'res.partner', 'id': 'load_test1', 'name': 'ACME Inc.'}]"})

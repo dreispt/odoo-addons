@@ -28,6 +28,7 @@
     'author': 'Daniel Reis',
     'website': 'https://github.com/dreispt/odoo-addons',
     'depends': ['base'],
-    'data': [],
+    'data': ['import_loader_data.xml'],
+    'test': ['import_loader_test.yml'],
     'installable': True,
 }
