@@ -30,7 +30,7 @@
       <act_window id="securitas_action_project_inf"
           name="Pedidos Informática"
           res_model="project.issue"
-          view_mode="kanban,tree,form"
+          view_mode="kanban,tree,form,calendar,gantt,graph"
           context="{'default_project_id': 1379998}"
           domain="[('project_id','=',1379998)]" />
       <menuitem id="securitas_menu_inf"
@@ -43,7 +43,7 @@
       <act_window id="securitas_action_project_ati"
           name="Pedidos Assistência ATI"
           res_model="project.task"
-          view_mode="kanban,tree,form"
+          view_mode="kanban,tree,form,calendar,gantt,graph"
           context="{'default_project_id': 1380008}"
           domain="[('project_id', '=', 1380008)]" />
       <menuitem id="securitas_menu_ati"
