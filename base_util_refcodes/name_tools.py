@@ -43,7 +43,7 @@ def extended_name_get(obj, cr, uid, ids, name_mask, flds_templ, context=None):
     # Ensure ids is a list, so that read() also returns a list
     if not isinstance(ids, list):
         ids = [ids]
-    flds_templ = list(set(flds_templ + ['name']))
+    flds_templ = list(set(flds_templ + [obj._rec_name]))
     res = []
     for rec in obj.read(cr, uid, ids, flds_templ, context=context):
         for key in flds_templ:
@@ -55,7 +55,7 @@ def extended_name_get(obj, cr, uid, ids, name_mask, flds_templ, context=None):
         try:
             n = name_mask % rec
         except:
-            n = rec['name']  # fallback to default name
+            n = rec[obj._rec_name]  # fallback to default name
         res.append((rec['id'], n))
     return res
 
