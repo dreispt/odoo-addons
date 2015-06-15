@@ -79,5 +79,33 @@
             </field>
         </record>
 
+        <!-- Project Task Graph  -->
+        <record model="ir.ui.view" id="project_task_graph_securitas">
+            <field name="name">project_task_graph_securitas</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_project_task_graph"/>
+            <field name="arch" type="xml">
+                <field name="project_id" position="after">
+                    <field name="department_id" type="row"/>
+                    <field name="analytic_account_id" type="row"/>
+                    <field name="task_id" type="row"/>
+                    <field name="effective_hours" type="measure"/>
+                    <field name="date_closed" type="col"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Project Search view -->
+        <record id="view_project_taskID_filter" model="ir.ui.view">
+            <field name="name">project.taskID.select</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_search_form"/>
+            <field name="arch" type="xml">
+                <filter string="Stage" position="before">
+                    <filter string="TaskID" name='task_id' context="{'group_by':'task_id'}"/>
+                </filter>
+            </field>
+        </record>
+
     </data>
 </openerp>
