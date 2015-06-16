@@ -43,7 +43,7 @@
       <act_window id="securitas_action_project_ati"
           name="Pedidos Assistência ATI"
           res_model="project.task"
-          view_mode="kanban,tree,form,calendar,gantt,graph"
+          view_mode="kanban,tree,form,gantt,graph"
           context="{'default_project_id': 1380008}"
           domain="[('project_id', '=', 1380008)]" />
       <menuitem id="securitas_menu_ati"

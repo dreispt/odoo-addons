@@ -18,10 +18,16 @@
 #
 ##############################################################################
 
-from openerp import fields, models
+from openerp import fields, models, api
 
 
 class Task(models.Model):
     _inherit = 'project.task'
 
     location_street = fields.Char('Street', related='location_id.street')
+    task_id = fields.Char(compute='_compute_task_id', store=True, index=True)
+
+    @api.one
+    @api.depends('create_uid')
+    def _compute_task_id(self):
+        self.task_id = str(self.id) #Choosing type string makes the field able to be export
